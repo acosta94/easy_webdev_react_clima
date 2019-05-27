@@ -10,22 +10,23 @@ class App extends Component {
     consulta: {},
     resultado: {}
   }
-
+  componentDidUpdate(prevProps, prevState){
+    if(prevState.consulta !== this.state.consulta){
+      this.consultarApi();
+    }
+  }
   componentDidMount(){
     this.setState({
       error: false
     })
   }
-componentDidUpdate(){
-  this.consultarApi();
-}
+
   consultarApi = ()=>{
     const {ciudad, pais} = this.state.consulta;
     if(!ciudad || !pais) return null;
     //Leer la url y agregar el API key
     const appId= '2fedcba959d799bbac5d3cdfc37107bd';
     let url = `http://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${appId}`;
-    console.log(url);
     //query con fetch api
     fetch(url)
       .then(respuesta => {
